@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Analytics } from "@/components/Analytics";
+import { AnalyticsInit } from "@/components/Analytics";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,6 +13,8 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+const GA_ID = "G-Y0WWSD4TVW";
 
 export const metadata: Metadata = {
   title: "GrowthPulse AI — Your Marketing Stack, Diagnosed in Minutes",
@@ -56,9 +59,23 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}');
+          `}
+        </Script>
+      </head>
       <body className="min-h-full flex flex-col">
         {children}
-        <Analytics />
+        <AnalyticsInit />
       </body>
     </html>
   );
