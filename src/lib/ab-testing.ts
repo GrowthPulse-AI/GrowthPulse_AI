@@ -58,8 +58,8 @@ export const AB_TESTS = {
  */
 export const HERO_HEADLINES: Record<string, { title: string; highlight: string }> = {
   control: {
-    title: "Your marketing stack, ",
-    highlight: "diagnosed in minutes.",
+    title: "One audit. Seven dimensions. ",
+    highlight: "Zero guesswork.",
   },
   variant_b: {
     title: "Stop guessing. ",

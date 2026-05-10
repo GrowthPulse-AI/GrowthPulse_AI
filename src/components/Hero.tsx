@@ -1,30 +1,22 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { getVariant, AB_TESTS, HERO_HEADLINES } from "@/lib/ab-testing";
 import { trackCTAClick } from "@/lib/analytics";
 
 export function Hero() {
-  const [showAnimation, setShowAnimation] = useState(false);
-  const [animationComplete, setAnimationComplete] = useState(false);
+  const [animationPhase, setAnimationPhase] = useState<"static" | "animating" | "done">("static");
   const [variant, setVariant] = useState<string>("control");
-  const animationRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     // A/B test: assign hero headline variant
     const assignedVariant = getVariant(AB_TESTS.heroHeadline);
     setVariant(assignedVariant);
 
-    // Show static image first for 2 seconds, then animation, then static again
-    const startTimer = setTimeout(() => {
-      setShowAnimation(true);
-    }, 2000);
-
-    // After animation finishes, switch back to static
-    const endTimer = setTimeout(() => {
-      setAnimationComplete(true);
-    }, 12000);
+    // Start animation after 2s, let it play for 10s, then crossfade back
+    const startTimer = setTimeout(() => setAnimationPhase("animating"), 2000);
+    const endTimer = setTimeout(() => setAnimationPhase("done"), 12000);
 
     return () => {
       clearTimeout(startTimer);
@@ -38,6 +30,8 @@ export function Hero() {
     <section
       id="hero"
       className="relative min-h-screen flex items-center overflow-hidden pt-20"
+      data-ab-test="hero_headline"
+      data-ab-variant={variant}
     >
       {/* Background effects */}
       <div className="absolute inset-0 grid-bg opacity-50" />
@@ -106,39 +100,47 @@ export function Hero() {
               </div>
             </div>
 
-            {/* A/B test indicator (visible for demo) */}
-            <div className="text-xs text-gp-gray-300 font-mono">
-              A/B Test: hero_headline → variant: {variant}
+            {/* A/B test evaluation indicator */}
+            <div className="mt-4 px-4 py-3 rounded-xl bg-gp-gray-50 border border-gp-gray-100">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xs font-mono font-semibold text-gp-cyan-dark">🧪 A/B Test Active</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-gp-cyan/10 text-gp-cyan-dark font-semibold">LIVE</span>
+              </div>
+              <p className="text-[11px] text-gp-gray-400 font-mono leading-relaxed">
+                Test: <span className="text-gp-gray-600">hero_headline</span> → Variant: <span className="text-gp-gray-600">{variant}</span>
+              </p>
+              <p className="text-[10px] text-gp-gray-300 mt-1 italic">
+                Evaluation indicator only — hidden in production via environment flag.
+              </p>
             </div>
           </div>
 
-          {/* Right column — Hero visual */}
-          <div className="relative animate-fade-in delay-300 flex justify-center">
-            <div className="relative w-full max-w-[600px]">
+          {/* Right column — Hero visual (fixed container, no shifts) */}
+          <div className="relative animate-fade-in delay-300 flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-[700px] aspect-[3/2]">
               {/* Glow behind image */}
               <div className="absolute inset-0 bg-gradient-to-br from-gp-cyan/20 via-transparent to-gp-green/20 rounded-2xl blur-3xl scale-110" />
 
-              {/* Static image (shown before and after animation) */}
+              {/* Static image — always present as base layer */}
               <Image
                 src="/GrowthPulse_AI-webp.webp"
                 alt="GrowthPulse AI — Marketing stack integration dashboard showing connected tools like HubSpot, Google Analytics, Meta Ads, Salesforce, and more"
-                width={1200}
-                height={800}
+                fill
+                sizes="(max-width: 768px) 100vw, 700px"
                 priority
-                className={`relative rounded-2xl shadow-2xl transition-opacity duration-700 ${
-                  showAnimation && !animationComplete ? "opacity-0 absolute inset-0" : "opacity-100"
+                className={`object-contain rounded-2xl drop-shadow-2xl transition-opacity duration-1000 ease-in-out ${
+                  animationPhase === "animating" ? "opacity-0" : "opacity-100"
                 }`}
               />
 
-              {/* Animation (shown during animation phase) */}
-              {showAnimation && !animationComplete && (
-                <img
-                  ref={animationRef}
-                  src="/GrowthPulse_AI.webp"
-                  alt="GrowthPulse AI animated integration demo"
-                  className="relative rounded-2xl shadow-2xl w-full animate-fade-in"
-                />
-              )}
+              {/* Animated WebP — stacked on top, crossfades in/out */}
+              <img
+                src="/GrowthPulse_AI.webp"
+                alt="GrowthPulse AI animated integration demo"
+                className={`absolute inset-0 w-full h-full object-contain rounded-2xl drop-shadow-2xl transition-opacity duration-1000 ease-in-out ${
+                  animationPhase === "animating" ? "opacity-100" : "opacity-0"
+                }`}
+              />
             </div>
           </div>
         </div>
