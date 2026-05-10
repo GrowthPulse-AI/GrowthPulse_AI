@@ -48,9 +48,9 @@ export const metadata: Metadata = {
     follow: true,
   },
   icons: {
-    icon: "/logos/GP.svg",
-    shortcut: "/logos/GP.svg",
-    apple: "/logos/GP.svg",
+    icon: "/logos/GP_fvc.png",
+    shortcut: "/logos/GP_fvc.png",
+    apple: "/logos/GP_fvc.png",
   },
 };
 
