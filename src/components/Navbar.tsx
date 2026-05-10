@@ -31,9 +31,7 @@ export function Navbar() {
       <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <a href="#" className="flex items-center gap-2 group" id="nav-logo">
-          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-gp-cyan to-gp-green flex items-center justify-center font-bold text-white text-sm shadow-md">
-            GP
-          </div>
+          <img src="/logos/GP.svg" alt="GrowthPulse AI" width={36} height={36} style={{ objectFit: "contain" }} />
           <span className="text-lg font-bold text-gp-gray-800 group-hover:text-gp-cyan-dark transition-colors">
             GrowthPulse
             <span className="gradient-text"> AI</span>

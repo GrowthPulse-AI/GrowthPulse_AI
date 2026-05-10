@@ -47,6 +47,11 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: "/logos/GP.svg",
+    shortcut: "/logos/GP.svg",
+    apple: "/logos/GP.svg",
+  },
 };
 
 export default function RootLayout({

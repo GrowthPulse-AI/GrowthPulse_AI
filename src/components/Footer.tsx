@@ -5,9 +5,7 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gp-cyan to-gp-green flex items-center justify-center font-bold text-white text-xs">
-              GP
-            </div>
+            <img src="/logos/GP.svg" alt="GrowthPulse AI" width={32} height={32} style={{ objectFit: "contain" }} />
             <span className="text-sm font-semibold text-gray-300">
               GrowthPulse AI
             </span>
