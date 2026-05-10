@@ -1,27 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { getVariant, AB_TESTS, HERO_HEADLINES } from "@/lib/ab-testing";
 import { trackCTAClick } from "@/lib/analytics";
+import { InteractiveHero } from "./InteractiveHero";
 
 export function Hero() {
-  const [animationPhase, setAnimationPhase] = useState<"static" | "animating" | "done">("static");
   const [variant, setVariant] = useState<string>("control");
 
   useEffect(() => {
-    // A/B test: assign hero headline variant
     const assignedVariant = getVariant(AB_TESTS.heroHeadline);
     setVariant(assignedVariant);
-
-    // Start animation after 2s, let it play for 10s, then crossfade back
-    const startTimer = setTimeout(() => setAnimationPhase("animating"), 2000);
-    const endTimer = setTimeout(() => setAnimationPhase("done"), 12000);
-
-    return () => {
-      clearTimeout(startTimer);
-      clearTimeout(endTimer);
-    };
   }, []);
 
   const headline = HERO_HEADLINES[variant] || HERO_HEADLINES.control;
@@ -39,7 +28,7 @@ export function Hero() {
       <div className="radial-glow w-[400px] h-[400px] bg-gp-green/10 bottom-20 -left-20 absolute" />
 
       <div className="section-container relative z-10 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-4 items-center">
           {/* Left column — Copy */}
           <div className="space-y-8 animate-fade-in-up">
             <div className="section-badge">
@@ -115,33 +104,9 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right column — Hero visual (fixed container, no shifts) */}
-          <div className="relative animate-fade-in delay-300 flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-[700px] aspect-[3/2]">
-              {/* Glow behind image */}
-              <div className="absolute inset-0 bg-gradient-to-br from-gp-cyan/20 via-transparent to-gp-green/20 rounded-2xl blur-3xl scale-110" />
-
-              {/* Static image — always present as base layer */}
-              <Image
-                src="/GrowthPulse_AI-webp.webp"
-                alt="GrowthPulse AI — Marketing stack integration dashboard showing connected tools like HubSpot, Google Analytics, Meta Ads, Salesforce, and more"
-                fill
-                sizes="(max-width: 768px) 100vw, 700px"
-                priority
-                className={`object-contain rounded-2xl drop-shadow-2xl transition-opacity duration-1000 ease-in-out ${
-                  animationPhase === "animating" ? "opacity-0" : "opacity-100"
-                }`}
-              />
-
-              {/* Animated WebP — stacked on top, crossfades in/out */}
-              <img
-                src="/GrowthPulse_AI.webp"
-                alt="GrowthPulse AI animated integration demo"
-                className={`absolute inset-0 w-full h-full object-contain rounded-2xl drop-shadow-2xl transition-opacity duration-1000 ease-in-out ${
-                  animationPhase === "animating" ? "opacity-100" : "opacity-0"
-                }`}
-              />
-            </div>
+          {/* Right column — Interactive visual */}
+          <div className="relative animate-fade-in delay-300">
+            <InteractiveHero />
           </div>
         </div>
       </div>
