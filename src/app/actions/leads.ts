@@ -18,6 +18,13 @@ export async function submitLead(
   const email = formData.get("email") as string;
   const companySize = formData.get("companySize") as string;
 
+  // UTM params (from hidden fields)
+  const utmSource = formData.get("utm_source") as string | null;
+  const utmMedium = formData.get("utm_medium") as string | null;
+  const utmCampaign = formData.get("utm_campaign") as string | null;
+  const utmTerm = formData.get("utm_term") as string | null;
+  const utmContent = formData.get("utm_content") as string | null;
+
   // Server-side validation
   if (!name || name.trim().length < 2) {
     return { success: false, message: "Please enter your full name." };
@@ -38,6 +45,11 @@ export async function submitLead(
       name: name.trim(),
       email: email.trim().toLowerCase(),
       company_size: companySize,
+      utm_source: utmSource || null,
+      utm_medium: utmMedium || null,
+      utm_campaign: utmCampaign || null,
+      utm_term: utmTerm || null,
+      utm_content: utmContent || null,
       created_at: new Date().toISOString(),
     });
 

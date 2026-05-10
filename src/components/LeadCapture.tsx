@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { submitLead } from "@/app/actions/leads";
+import { trackFormStart, trackFormSubmit, trackCTAClick } from "@/lib/analytics";
+import { getStoredUTMParams } from "@/lib/utm";
 
 const companySizes = [
   "1-10 employees",
@@ -16,6 +18,23 @@ export function LeadCapture() {
     success: false,
     message: "",
   });
+
+  const formStarted = useRef(false);
+
+  // Track form start on first interaction
+  const handleFormFocus = () => {
+    if (!formStarted.current) {
+      formStarted.current = true;
+      trackFormStart("lead-capture-form");
+    }
+  };
+
+  // Track successful submission
+  useEffect(() => {
+    if (state.success) {
+      trackFormSubmit("lead-capture-form");
+    }
+  }, [state.success]);
 
   if (state.success) {
     return (
@@ -86,7 +105,10 @@ export function LeadCapture() {
 
           {/* Right — Form */}
           <div className="glass-card p-8 sm:p-10">
-            <form action={formAction} className="space-y-5" id="lead-capture-form">
+            <form action={formAction} className="space-y-5" id="lead-capture-form" onFocus={handleFormFocus}>
+              {/* Hidden UTM fields */}
+              <UTMHiddenFields />
+
               <div>
                 <label
                   htmlFor="lead-name"
@@ -132,6 +154,7 @@ export function LeadCapture() {
                   id="lead-company-size"
                   name="companySize"
                   required
+                  defaultValue=""
                   className="w-full px-4 py-3 rounded-xl border border-gp-gray-200 bg-white text-gp-gray-800 focus:outline-none focus:ring-2 focus:ring-gp-cyan/40 focus:border-gp-cyan transition-all text-sm appearance-none"
                 >
                   <option value="" disabled>
@@ -156,6 +179,9 @@ export function LeadCapture() {
                 id="lead-submit-btn"
                 disabled={pending}
                 className="btn-primary w-full text-lg !py-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() =>
+                  trackCTAClick("lead-submit-btn", "Get My Free Growth Audit", "lead-capture")
+                }
               >
                 <span>
                   {pending ? "Submitting..." : "Get My Free Growth Audit →"}
@@ -170,5 +196,20 @@ export function LeadCapture() {
         </div>
       </div>
     </section>
+  );
+}
+
+/**
+ * Hidden fields that inject stored UTM params into the form submission
+ */
+function UTMHiddenFields() {
+  const utmParams = typeof window !== "undefined" ? getStoredUTMParams() : {};
+
+  return (
+    <>
+      {Object.entries(utmParams).map(([key, value]) => (
+        <input key={key} type="hidden" name={key} value={value as string} />
+      ))}
+    </>
   );
 }

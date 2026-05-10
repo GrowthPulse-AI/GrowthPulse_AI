@@ -2,29 +2,37 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { getVariant, AB_TESTS, HERO_HEADLINES } from "@/lib/ab-testing";
+import { trackCTAClick } from "@/lib/analytics";
 
 export function Hero() {
   const [showAnimation, setShowAnimation] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
+  const [variant, setVariant] = useState<string>("control");
   const animationRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
+    // A/B test: assign hero headline variant
+    const assignedVariant = getVariant(AB_TESTS.heroHeadline);
+    setVariant(assignedVariant);
+
     // Show static image first for 2 seconds, then animation, then static again
     const startTimer = setTimeout(() => {
       setShowAnimation(true);
     }, 2000);
 
-    // Estimated animation duration — adjust based on actual webp animation length
     // After animation finishes, switch back to static
     const endTimer = setTimeout(() => {
       setAnimationComplete(true);
-    }, 12000); // 2s delay + ~10s animation
+    }, 12000);
 
     return () => {
       clearTimeout(startTimer);
       clearTimeout(endTimer);
     };
   }, []);
+
+  const headline = HERO_HEADLINES[variant] || HERO_HEADLINES.control;
 
   return (
     <section
@@ -48,9 +56,10 @@ export function Hero() {
               500+ Companies Audited
             </div>
 
+            {/* A/B tested headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight text-gp-gray-900">
-              Your marketing stack,{" "}
-              <span className="gradient-text">diagnosed in minutes.</span>
+              {headline.title}
+              <span className="gradient-text">{headline.highlight}</span>
             </h1>
 
             <p className="text-lg sm:text-xl text-gp-gray-500 max-w-lg leading-relaxed">
@@ -64,6 +73,9 @@ export function Hero() {
                 href="#get-started"
                 id="hero-cta-primary"
                 className="btn-primary text-lg !py-4 !px-8 animate-pulse-glow"
+                onClick={() =>
+                  trackCTAClick("hero-cta-primary", "Get Your Free Audit", "hero")
+                }
               >
                 <span>Get Your Free Audit →</span>
               </a>
@@ -71,6 +83,9 @@ export function Hero() {
                 href="#features"
                 id="hero-cta-secondary"
                 className="btn-secondary text-lg !py-4 !px-8"
+                onClick={() =>
+                  trackCTAClick("hero-cta-secondary", "See How It Works", "hero")
+                }
               >
                 See How It Works
               </a>
@@ -89,6 +104,11 @@ export function Hero() {
                 </svg>
                 5-minute setup
               </div>
+            </div>
+
+            {/* A/B test indicator (visible for demo) */}
+            <div className="text-xs text-gp-gray-300 font-mono">
+              A/B Test: hero_headline → variant: {variant}
             </div>
           </div>
 
