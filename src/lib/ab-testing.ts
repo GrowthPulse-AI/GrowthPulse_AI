@@ -47,23 +47,21 @@ export function getVariant(test: ABTest): string {
  * Active A/B tests configuration
  */
 export const AB_TESTS = {
-  heroHeadline: {
-    name: "hero_headline",
+  heroCta: {
+    name: "hero_cta",
     variants: ["control", "variant_b"],
   },
 } as const;
 
 /**
- * Hero headline variants content
+ * Hero CTA button variants
  */
-export const HERO_HEADLINES: Record<string, { title: string; highlight: string }> = {
+export const HERO_CTA_VARIANTS: Record<string, { label: string }> = {
   control: {
-    title: "Your marketing stack, ",
-    highlight: "diagnosed in minutes.",
+    label: "Get Your Free Audit →",
   },
   variant_b: {
-    title: "One audit. Seven dimensions. ",
-    highlight: "Zero guesswork.",
+    label: "Start Your Growth Score →",
   },
 };
 

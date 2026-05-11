@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getVariant, AB_TESTS, HERO_HEADLINES } from "@/lib/ab-testing";
+import { getVariant, AB_TESTS, HERO_CTA_VARIANTS } from "@/lib/ab-testing";
 import { trackCTAClick } from "@/lib/analytics";
 import { InteractiveHero } from "./InteractiveHero";
 
@@ -9,17 +9,17 @@ export function Hero() {
   const [variant, setVariant] = useState<string>("control");
 
   useEffect(() => {
-    const assignedVariant = getVariant(AB_TESTS.heroHeadline);
+    const assignedVariant = getVariant(AB_TESTS.heroCta);
     setVariant(assignedVariant);
   }, []);
 
-  const headline = HERO_HEADLINES[variant] || HERO_HEADLINES.control;
+  const cta = HERO_CTA_VARIANTS[variant] || HERO_CTA_VARIANTS.control;
 
   return (
     <section
       id="hero"
       className="relative min-h-screen flex items-center overflow-hidden pt-20"
-      data-ab-test="hero_headline"
+      data-ab-test="hero_cta"
       data-ab-variant={variant}
     >
       {/* Background effects */}
@@ -39,28 +39,32 @@ export function Hero() {
               500+ Companies Audited
             </div>
 
-            {/* A/B tested headline */}
+            {/* Fixed canonical tagline — per product brief section 2.1 */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight text-gp-gray-900">
-              {headline.title}
-              <span className="gradient-text">{headline.highlight}</span>
+              Your marketing stack,{" "}
+              <span className="gradient-text">diagnosed in minutes.</span>
             </h1>
 
+            {/* ICP-targeted subheadline */}
             <p className="text-lg sm:text-xl text-gp-gray-500 max-w-lg leading-relaxed">
-              Connect your tools. Get a{" "}
+              For B2B SaaS teams who know something&apos;s off — but can&apos;t pinpoint where.{" "}
+              Get a{" "}
               <strong className="text-gp-gray-700">7-dimension growth score</strong>{" "}
-              with AI-powered recommendations — before you commit to anything.
+              with AI-powered recommendations.{" "}
+              <strong className="text-gp-gray-700">No agency. No retainer. Just your numbers.</strong>
             </p>
 
+            {/* CTA buttons — primary is A/B tested */}
             <div className="flex flex-col sm:flex-row gap-4">
               <a
                 href="#get-started"
                 id="hero-cta-primary"
                 className="btn-primary text-lg !py-4 !px-8 animate-pulse-glow"
                 onClick={() =>
-                  trackCTAClick("hero-cta-primary", "Get Your Free Audit", "hero")
+                  trackCTAClick("hero-cta-primary", cta.label, "hero")
                 }
               >
-                <span>Get Your Free Audit →</span>
+                <span>{cta.label}</span>
               </a>
               <a
                 href="#features"
@@ -96,7 +100,7 @@ export function Hero() {
                 <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-gp-cyan/10 text-gp-cyan-dark font-semibold">LIVE</span>
               </div>
               <p className="text-[11px] text-gp-gray-400 font-mono leading-relaxed">
-                Test: <span className="text-gp-gray-600">hero_headline</span> → Variant: <span className="text-gp-gray-600">{variant}</span>
+                Test: <span className="text-gp-gray-600">hero_cta</span> → Variant: <span className="text-gp-gray-600">{variant}</span>
               </p>
               <p className="text-[10px] text-gp-gray-300 mt-1 italic">
                 Evaluation indicator only — hidden in production via environment flag.

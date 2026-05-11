@@ -13,7 +13,7 @@ const features = [
     ),
     title: "One-Click Stack Integration",
     description:
-      "Connects to HubSpot, Google Analytics, Meta Ads, Klaviyo, Salesforce, and 30+ tools via API in under 5 minutes.",
+      "Imagine opening one dashboard and seeing the full picture of your marketing — no tab switching, no manual exports, no waiting. Everything connected in under 5 minutes.",
     highlight: "30+ integrations",
   },
   {
@@ -25,7 +25,7 @@ const features = [
     ),
     title: "7-Dimension Growth Score",
     description:
-      "Proprietary scoring algorithm rates each growth dimension on a 0–100 scale with benchmarks against industry peers.",
+      "Stop guessing which part of your marketing is bleeding money. Get a single score — broken down across 7 dimensions — that tells you exactly where to look and what to fix.",
     highlight: "0–100 scoring",
   },
   {
@@ -36,7 +36,7 @@ const features = [
     ),
     title: "AI-Generated Action Plan",
     description:
-      "Produces a prioritized 90-day roadmap with specific recommendations ranked by expected impact and effort.",
+      "No more end-of-quarter panic. You'll have a clear 90-day roadmap — every action ranked by impact — so your team always knows what to do next, and why.",
     highlight: "90-day roadmap",
   },
   {
@@ -49,7 +49,7 @@ const features = [
     ),
     title: "Executive Summary Report",
     description:
-      "Auto-generates a board-ready PDF with key findings, visualized scores, and strategic recommendations.",
+      "Walk into that leadership meeting with confidence instead of excuses. A board-ready PDF — auto-generated, data-backed, visually sharp — delivered before anyone asks.",
     highlight: "Board-ready PDF",
   },
   {
@@ -62,7 +62,7 @@ const features = [
     ),
     title: "Live Dashboard",
     description:
-      "Real-time monitoring of all 7 dimensions with alerts when performance dips below benchmarks.",
+      "Sleep better knowing your marketing is being watched 24/7. The moment something drops below benchmark, you get an alert — before it becomes a problem leadership notices.",
     highlight: "Real-time alerts",
   },
 ];
@@ -91,10 +91,8 @@ function FeatureCard({
   return (
     <div
       ref={ref}
-      className={`glass-card p-8 group transition-all duration-700 ${
-        visible
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-8"
+      className={`glass-card p-8 group h-full transition-all duration-700 ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
@@ -120,7 +118,6 @@ function FeatureCard({
 export function Features() {
   return (
     <section id="features" className="relative py-20 sm:py-28 overflow-hidden">
-      {/* Background accents */}
       <div className="radial-glow w-[500px] h-[500px] bg-gp-cyan/5 top-0 left-1/2 -translate-x-1/2 absolute" />
 
       <div className="section-container relative z-10 !py-0">
@@ -137,16 +134,26 @@ export function Features() {
             <span className="gradient-text">diagnose growth</span>
           </h2>
           <p className="text-lg text-gp-gray-400">
-            From integration to insight — GrowthPulse AI covers every dimension
-            of your marketing performance.
+            From scattered data to clear decisions — in minutes, not months.
           </p>
         </div>
 
-        {/* Feature grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, i) => (
-            <FeatureCard key={feature.title} feature={feature} index={i} />
+        {/* 6-column grid: top 3 cards + bottom 2 centered (same exact card width) */}
+        <div className="grid grid-cols-6 gap-6">
+          {/* Top row — 3 cards, each 2/6 cols */}
+          {features.slice(0, 3).map((feature, i) => (
+            <div key={feature.title} className="col-span-6 sm:col-span-3 lg:col-span-2">
+              <FeatureCard feature={feature} index={i} />
+            </div>
           ))}
+
+          {/* Bottom row — 2 cards centered: cols 2-3 and 4-5 on a 6-col grid */}
+          <div className="col-span-6 sm:col-span-3 lg:col-span-2 lg:col-start-2">
+            <FeatureCard feature={features[3]} index={3} />
+          </div>
+          <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+            <FeatureCard feature={features[4]} index={4} />
+          </div>
         </div>
       </div>
     </section>

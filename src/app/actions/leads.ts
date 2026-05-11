@@ -16,7 +16,7 @@ export async function submitLead(
 ): Promise<LeadState> {
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
-  const companySize = formData.get("companySize") as string;
+  const monthlyBudget = formData.get("monthlyBudget") as string;
 
   // UTM params (from hidden fields)
   const utmSource = formData.get("utm_source") as string | null;
@@ -34,8 +34,8 @@ export async function submitLead(
     return { success: false, message: "Please enter a valid email address." };
   }
 
-  if (!companySize) {
-    return { success: false, message: "Please select your company size." };
+  if (!monthlyBudget) {
+    return { success: false, message: "Please select your monthly marketing budget." };
   }
 
   try {
@@ -44,7 +44,7 @@ export async function submitLead(
     const { error } = await supabase.from("leads").insert({
       name: name.trim(),
       email: email.trim().toLowerCase(),
-      company_size: companySize,
+      monthly_budget: monthlyBudget,
       utm_source: utmSource || null,
       utm_medium: utmMedium || null,
       utm_campaign: utmCampaign || null,

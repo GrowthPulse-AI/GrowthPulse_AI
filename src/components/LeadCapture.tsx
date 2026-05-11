@@ -5,12 +5,11 @@ import { submitLead } from "@/app/actions/leads";
 import { trackFormStart, trackFormSubmit, trackCTAClick } from "@/lib/analytics";
 import { getStoredUTMParams } from "@/lib/utm";
 
-const companySizes = [
-  "1-10 employees",
-  "11-50 employees",
-  "51-200 employees",
-  "201-500 employees",
-  "500+ employees",
+const monthlyBudgets = [
+  "Under $5K/mo",
+  "$5K–$20K/mo",
+  "$20K–$50K/mo",
+  "$50K+/mo",
 ];
 
 export function LeadCapture() {
@@ -145,24 +144,24 @@ export function LeadCapture() {
 
               <div>
                 <label
-                  htmlFor="lead-company-size"
+                  htmlFor="lead-monthly-budget"
                   className="block text-sm font-semibold text-gp-gray-700 mb-2"
                 >
-                  Company Size
+                  Monthly Marketing Budget
                 </label>
                 <select
-                  id="lead-company-size"
-                  name="companySize"
+                  id="lead-monthly-budget"
+                  name="monthlyBudget"
                   required
                   defaultValue=""
                   className="w-full px-4 py-3 rounded-xl border border-gp-gray-200 bg-white text-gp-gray-800 focus:outline-none focus:ring-2 focus:ring-gp-cyan/40 focus:border-gp-cyan transition-all text-sm appearance-none"
                 >
                   <option value="" disabled>
-                    Select company size
+                    Select your budget range
                   </option>
-                  {companySizes.map((size) => (
-                    <option key={size} value={size}>
-                      {size}
+                  {monthlyBudgets.map((budget) => (
+                    <option key={budget} value={budget}>
+                      {budget}
                     </option>
                   ))}
                 </select>

@@ -15,6 +15,7 @@ const testimonials = [
     author: "Sarah Chen",
     role: "VP Marketing",
     company: "NovaBridge SaaS",
+    context: "B2B SaaS · Series A · 5-person marketing team",
   },
   {
     quote:
@@ -22,6 +23,7 @@ const testimonials = [
     author: "Marcus Reid",
     role: "Head of Growth",
     company: "StackLayer",
+    context: "B2B SaaS · $4M ARR · 3-person growth team",
   },
   {
     quote:
@@ -29,6 +31,7 @@ const testimonials = [
     author: "Elena Torres",
     role: "CMO",
     company: "DataForge Analytics",
+    context: "B2B SaaS · $12M ARR · 8-person marketing team",
   },
 ];
 
@@ -86,7 +89,7 @@ export function SocialProof() {
         {/* Trusted by logos */}
         <div className="text-center mb-10">
           <p className="text-xs uppercase tracking-widest text-gp-gray-300 font-semibold mb-6">
-            Trusted by growing SaaS teams
+            What B2B SaaS teams discovered when they stopped guessing
           </p>
           <div className="flex flex-wrap justify-center gap-6 sm:gap-10">
             {logos.map((logo) => (
@@ -146,6 +149,9 @@ export function SocialProof() {
                   </p>
                   <p className="text-xs text-gp-gray-400">
                     {t.role}, {t.company}
+                  </p>
+                  <p className="text-[10px] text-gp-gray-300 mt-0.5 italic">
+                    {t.context} *fictional
                   </p>
                 </div>
               </div>

@@ -5,6 +5,9 @@
 A high-converting landing page system for GrowthPulse AI — a SaaS platform that connects to a company's existing marketing tools and generates automated diagnostic reports across 7 growth dimensions.
 
 🔗 **Live Site:** [growth-pulse-ai-black.vercel.app](https://growth-pulse-ai-black.vercel.app/)
+📁 **Repository:** [github.com/GrowthPulse-AI/GrowthPulse_AI](https://github.com/GrowthPulse-AI/GrowthPulse_AI)
+
+> **Note for Azarian team:** Repository collaborator access granted to [@hamletazarian](https://github.com/hamletazarian) per assessment requirements.
 
 ---
 
@@ -78,6 +81,18 @@ Used React Server Actions for form handling instead of traditional API routes. T
 - Enables progressive enhancement (forms work without JS)
 - Simplifies the codebase (no separate API layer)
 
+### Interactive SVG Hero Visualization
+
+Instead of stock images or generic illustrations (brief section 2.6: *"No stock photography of people. Use abstract visuals, data visualizations, or illustrations"*), the hero features a fully custom SVG orbital diagram:
+
+- **9 real brand logos** (HubSpot, Salesforce, GA, Meta, Shopify, Google Ads, TikTok, LinkedIn, ActiveCampaign) orbit a central GrowthPulse hub
+- **Animated circuit connections** draw progressively as tools "connect"
+- **Growth Score counter** increments as connections complete
+- **Hover tooltips** display on each node
+- Built with pure React + SVG — zero external dependencies, < 15KB
+
+This directly visualizes the product's core value prop ("connects to your existing marketing tools") without saying a word.
+
 ### Component Architecture
 
 Each section is a self-contained component with its own state management:
@@ -96,12 +111,12 @@ Each section is a self-contained component with its own state management:
 - ✅ **Lead Capture** — Final CTA section with form and benefit bullets
 
 ### 2. Lead Capture System
-- ✅ Form fields: Name, Email, Company Size (qualifying field)
+- ✅ Form fields: Name, Email, Monthly Marketing Budget (qualifying field — captures lead quality signal aligned to ICP)
 - ✅ Client-side validation (HTML5 required + type attributes)
 - ✅ Server-side validation (regex email check, field length validation)
 - ✅ Thank-you confirmation state with success animation
-- ✅ Data persisted to Supabase PostgreSQL (`leads` table)
-- ✅ UTM parameters stored alongside lead data for attribution
+- ✅ Data persisted to Supabase PostgreSQL (`leads` table with `monthly_budget` field)
+- ✅ UTM parameters stored alongside lead data for full attribution
 
 ### 3. Analytics & Tracking
 - ✅ **Google Analytics 4** integration via `next/script` (afterInteractive strategy)
@@ -117,11 +132,12 @@ Each section is a self-contained component with its own state management:
 ### 4. A/B Testing
 - ✅ Custom A/B testing engine (`src/lib/ab-testing.ts`)
 - ✅ Cookie-based variant persistence (30-day expiry)
-- ✅ Active test: `hero_headline`
-  - **Control:** "Your marketing stack, diagnosed in minutes."
-  - **Variant B:** "Stop guessing. Start growing."
-- ✅ Variant assignment tracked in GA4 for analysis
-- ✅ Visible test indicator in hero section for demo purposes
+- ✅ Active test: `hero_cta` — testing primary CTA button copy (higher marketing maturity than testing the brand tagline)
+  - **Control:** "Get Your Free Audit →"
+  - **Variant B:** "Start Your Growth Score →"
+- ✅ Headline fixed to canonical brand tagline (per brief section 2.1): *"Your marketing stack, diagnosed in minutes."*
+- ✅ Variant assignment tracked in GA4 via `ab_test_assignment` event
+- ✅ Visible test indicator in hero section for evaluator demo
 
 ### 5. Performance & SEO
 - ✅ Mobile-responsive design (all breakpoints)
@@ -169,7 +185,7 @@ CREATE TABLE leads (
   id BIGSERIAL PRIMARY KEY,
   name TEXT NOT NULL,
   email TEXT NOT NULL,
-  company_size TEXT NOT NULL,
+  monthly_budget TEXT NOT NULL,
   utm_source TEXT,
   utm_medium TEXT,
   utm_campaign TEXT,
@@ -223,14 +239,15 @@ The development process followed a structured vibe coding workflow:
 
 | Decision | Alternative Considered | Why This Choice |
 |----------|----------------------|-----------------|
-| **Supabase over Airtable** | Airtable is simpler | Supabase provides a real PostgreSQL database, better scalability, and free tier sufficient for this project |
-| **Custom A/B testing over third-party** | Could use Optimizely/VWO | Custom engine demonstrates deeper technical understanding and marketing systems architecture knowledge |
-| **Server Actions over API routes** | Traditional REST endpoints | Server Actions reduce boilerplate, provide better DX with React 19, and align with Next.js 16 best practices |
-| **GA4 over PostHog** | PostHog has more features | GA4 is industry standard, evaluators are more likely familiar with it, and it's free |
-| **Single-page over multi-page** | Could split into separate pages | Single-page conversion flow reduces friction — fewer clicks to CTA. For a landing page, this is the optimal pattern |
-| **Cookie-based A/B over server-side** | Server-side splitting is more robust | Cookie-based is simpler, works with static generation, and sufficient for demonstration purposes |
-| **Custom animation timing** | Could use a library like Framer Motion | Kept dependencies minimal for performance; CSS animations + Intersection Observer achieve the same visual quality |
-| **WebP animation with static bookends** | Could use video or Lottie | WebP is lightweight, no additional dependencies, and the static→animated→static pattern masks quality differences in animation frames |
+| **Supabase over Airtable** | Airtable is simpler | Supabase provides real PostgreSQL, better scalability, and the free tier is sufficient for this project |
+| **Custom A/B testing over third-party** | Could use Optimizely/VWO | Custom engine demonstrates deeper technical understanding; also avoids third-party script performance penalty |
+| **A/B test on CTA copy, not headline** | Testing the hero headline | Testing CTA text is more common in production CRO — the brand tagline (per brief 2.1) should remain fixed and consistent |
+| **Server Actions over API routes** | Traditional REST endpoints | Server Actions reduce boilerplate, provide built-in CSRF protection, and align with Next.js App Router best practices |
+| **GA4 over PostHog** | PostHog has more features | GA4 is industry standard; evaluators are more likely familiar with it and it's free |
+| **Single-page over multi-page** | Could split into separate pages | Single-page conversion flow reduces friction — fewer clicks to CTA. Optimal pattern for landing page conversions |
+| **Cookie-based A/B over server-side** | Server-side splitting is more robust | Cookie-based works with static generation and is sufficient for demonstration purposes |
+| **Interactive SVG hero over static image** | Stock imagery or Lottie animation | SVG orbital diagram directly visualizes the product's core value prop with zero external dependencies and < 15KB weight. Aligns with brief requirement for abstract/data visuals |
+| **Zero animation libraries** | Framer Motion, GSAP | CSS animations + Intersection Observer achieve equivalent visual quality; keeps bundle lean and page load fast |
 
 ---
 
@@ -238,28 +255,39 @@ The development process followed a structured vibe coding workflow:
 
 ```
 growthpulse-ai/
-├── public/                          # Static assets
-│   ├── GrowthPulse_AI.png          # Brand image (high-res)
-│   ├── GrowthPulse_AI.webp         # Animated WebP
-│   └── GrowthPulse_AI-webp.webp    # Static WebP frame
+├── public/
+│   └── logos/                       # Official brand SVG assets
+│       ├── GP.svg                   # GP icon (navbar, footer, favicon)
+│       ├── GrowthPulse.svg          # Full logo (hero hub center)
+│       ├── hubspot.svg
+│       ├── salesforce.svg
+│       ├── google-analytics.svg
+│       ├── meta.svg
+│       ├── shopify.svg
+│       ├── google-ads.svg
+│       ├── tiktok.svg
+│       ├── linkedin.svg
+│       └── activecampaign.svg
 ├── src/
 │   ├── app/
 │   │   ├── actions/
-│   │   │   └── leads.ts            # Server action: lead form submission
+│   │   │   └── leads.ts            # Server action: lead form submission + validation
+│   │   ├── favicon.ico             # GP brand favicon
 │   │   ├── globals.css             # Design system: colors, animations, utilities
-│   │   ├── layout.tsx              # Root layout: fonts, SEO meta, Analytics
+│   │   ├── layout.tsx              # Root layout: fonts, SEO meta, OG tags, Analytics
 │   │   └── page.tsx                # Landing page: section composition
 │   ├── components/
 │   │   ├── Analytics.tsx           # GA4 provider + scroll/UTM initialization
 │   │   ├── Features.tsx            # 5 product features with animations
-│   │   ├── Footer.tsx              # Footer with branding + disclaimer
-│   │   ├── Hero.tsx                # Hero section with A/B test
+│   │   ├── Footer.tsx              # Footer with GP branding
+│   │   ├── Hero.tsx                # Hero section with A/B test on CTA
+│   │   ├── InteractiveHero.tsx     # SVG orbital visualization (9 real brand logos)
 │   │   ├── LeadCapture.tsx         # Lead form with validation + UTM fields
 │   │   ├── Navbar.tsx              # Sticky nav with scroll effect
-│   │   ├── Pricing.tsx             # 3-tier pricing cards
+│   │   ├── Pricing.tsx             # 3-tier pricing cards (exact brief tiers)
 │   │   └── SocialProof.tsx         # Stats, logos, testimonials
 │   └── lib/
-│       ├── ab-testing.ts           # A/B testing engine (cookie-based)
+│       ├── ab-testing.ts           # A/B testing engine (cookie-based, GA4-tracked)
 │       ├── analytics.ts            # GA4 custom event tracking utilities
 │       └── utm.ts                  # UTM parameter capture + storage
 ├── .env.local                       # Environment variables (not in repo)
@@ -270,15 +298,29 @@ growthpulse-ai/
 
 ---
 
+## Development Process — Branch Evolution
+
+The commit history tells the story of iterative vibe coding:
+
+| Branch | What it represents |
+|--------|-------------------|
+| `feat/animated-hero` | v1 — Initial build with animated WebP hero visual |
+| `feat/interactive-hero-v1` | v2 — Replaced static image with custom SVG orbital diagram |
+| `main` | v3 (current) — Official brand assets, ICP-optimized copy, polished UX |
+
+Each branch is preserved to demonstrate the development evolution — not squashed.
+
+---
+
 ## Evaluation Checklist
 
 | Criteria | Weight | Coverage |
 |----------|--------|----------|
-| **Marketing Awareness** | 25% | Conversion-focused layout, funnel-aligned section order, strategic CTAs, social proof placement |
-| **Technical Execution** | 25% | Clean architecture, TypeScript, server actions, Supabase persistence, GA4 integration |
-| **Vibe Coding Fluency** | 20% | AI-assisted rapid development, meaningful commit history, iterative refinement |
-| **Design & UX** | 15% | Custom design system, glassmorphism, micro-animations, responsive, accessible |
-| **Documentation** | 15% | This README, descriptive commits, architecture diagrams, trade-off explanations |
+| **Marketing Awareness** | 25% | ICP-targeted copy, outcome-focused feature descriptions, TOFU→MOFU→BOFU funnel, strategic CTA placement, pain-point-first subheadline |
+| **Technical Execution** | 25% | Clean 4-layer architecture, TypeScript, server actions, Supabase persistence, GA4 with 6 custom events, UTM pipeline |
+| **Vibe Coding Fluency** | 20% | AI-assisted development with Gemini, meaningful 3-branch commit history showing iterative refinement, manual architectural decisions |
+| **Design & UX** | 15% | Interactive SVG hero, custom design system, glassmorphism, micro-animations, responsive, GP brand identity |
+| **Documentation** | 15% | This README, architecture diagram, trade-off table, branch evolution, collaborator access granted |
 
 ---
 
