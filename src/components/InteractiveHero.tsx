@@ -3,15 +3,15 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
 const TOOLS = [
-  { name: "HubSpot",           color: "#ff7a59", dataType: "CRM & Pipeline",        angle: -45,  logo: "/logos/hubspot.svg" },
-  { name: "Salesforce",        color: "#00a1e0", dataType: "Deal Flow & Revenue",    angle: 270,  logo: "/logos/salesforce.svg" },
-  { name: "Google Analytics",  color: "#e37400", dataType: "Traffic & Behavior",     angle: 0,    logo: "/logos/google-analytics.svg" },
-  { name: "Meta Ads",          color: "#0081fb", dataType: "Ad Spend & ROAS",        angle: 45,   logo: "/logos/meta.svg" },
-  { name: "Shopify",           color: "#7ab55c", dataType: "Revenue & Conversions",  angle: 90,   logo: "/logos/shopify.svg" },
-  { name: "Google Ads",        color: "#4285f4", dataType: "Campaign & Keywords",    angle: 160,  logo: "/logos/google-ads.svg" },
-  { name: "TikTok Ads",        color: "#010101", dataType: "Video Ad Performance",   angle: 200,  logo: "/logos/tiktok.svg" },
-  { name: "LinkedIn Ads",      color: "#0a66c2", dataType: "B2B Lead Data",          angle: 235,  logo: "/logos/linkedin.svg" },
-  { name: "ActiveCampaign",    color: "#356ae6", dataType: "Automation & Email",     angle: 125,  logo: "/logos/activecampaign.svg" },
+  { name: "HubSpot", color: "#ff7a59", dataType: "CRM & Pipeline", angle: -45, logo: "/logos/hubspot.svg" },
+  { name: "Salesforce", color: "#00a1e0", dataType: "Deal Flow & Revenue", angle: 270, logo: "/logos/salesforce.svg" },
+  { name: "Google Analytics", color: "#e37400", dataType: "Traffic & Behavior", angle: 0, logo: "/logos/google-analytics.svg" },
+  { name: "Meta Ads", color: "#0081fb", dataType: "Ad Spend & ROAS", angle: 45, logo: "/logos/meta.svg" },
+  { name: "Shopify", color: "#7ab55c", dataType: "Revenue & Conversions", angle: 90, logo: "/logos/shopify.svg" },
+  { name: "Google Ads", color: "#4285f4", dataType: "Campaign & Keywords", angle: 160, logo: "/logos/google-ads.svg" },
+  { name: "TikTok Ads", color: "#010101", dataType: "Video Ad Performance", angle: 200, logo: "/logos/tiktok.svg" },
+  { name: "LinkedIn Ads", color: "#0a66c2", dataType: "B2B Lead Data", angle: 235, logo: "/logos/linkedin.svg" },
+  { name: "ActiveCampaign", color: "#356ae6", dataType: "Automation & Email", angle: 125, logo: "/logos/activecampaign.svg" },
 ];
 
 const HEX_POINTS = "50,2 95,25 95,75 50,98 5,75 5,25";
@@ -104,30 +104,30 @@ export function InteractiveHero() {
       <svg width={dim.w} height={dim.h} viewBox={`0 0 ${dim.w} ${dim.h}`} className="absolute inset-0">
         <defs>
           <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#22d3ee" stopOpacity=".4"/>
-            <stop offset="100%" stopColor="#34d399" stopOpacity=".25"/>
+            <stop offset="0%" stopColor="#22d3ee" stopOpacity=".4" />
+            <stop offset="100%" stopColor="#34d399" stopOpacity=".25" />
           </linearGradient>
-          <filter id="pg"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <filter id="sg"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="pg"><feGaussianBlur stdDeviation="5" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
+          <filter id="sg"><feGaussianBlur stdDeviation="3" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
           <radialGradient id="hubGlow" cx="50%" cy="40%" r="50%">
-            <stop offset="0%" stopColor="#22d3ee" stopOpacity=".15"/>
-            <stop offset="100%" stopColor="#22d3ee" stopOpacity="0"/>
+            <stop offset="0%" stopColor="#22d3ee" stopOpacity=".15" />
+            <stop offset="100%" stopColor="#22d3ee" stopOpacity="0" />
           </radialGradient>
           <linearGradient id="platTop" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#e0f7fa"/>
-            <stop offset="100%" stopColor="#f0fdfa"/>
+            <stop offset="0%" stopColor="#e0f7fa" />
+            <stop offset="100%" stopColor="#f0fdfa" />
           </linearGradient>
           <linearGradient id="platSide" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#b2ebf2"/>
-            <stop offset="100%" stopColor="#80deea"/>
+            <stop offset="0%" stopColor="#b2ebf2" />
+            <stop offset="100%" stopColor="#80deea" />
           </linearGradient>
         </defs>
 
         {/* Background circuit traces */}
         <g opacity=".05" stroke="#22d3ee" strokeWidth="1" fill="none">
-          <path d={`M 0 ${dim.h * .3} L ${dim.w * .12} ${dim.h * .3} L ${dim.w * .12} ${dim.h * .6}`}/>
-          <path d={`M ${dim.w} ${dim.h * .2} L ${dim.w * .88} ${dim.h * .2} L ${dim.w * .88} ${dim.h * .55}`}/>
-          <path d={`M ${dim.w * .3} ${dim.h} L ${dim.w * .3} ${dim.h * .88} L ${dim.w * .55} ${dim.h * .88}`}/>
+          <path d={`M 0 ${dim.h * .3} L ${dim.w * .12} ${dim.h * .3} L ${dim.w * .12} ${dim.h * .6}`} />
+          <path d={`M ${dim.w} ${dim.h * .2} L ${dim.w * .88} ${dim.h * .2} L ${dim.w * .88} ${dim.h * .55}`} />
+          <path d={`M ${dim.w * .3} ${dim.h} L ${dim.w * .3} ${dim.h * .88} L ${dim.w * .55} ${dim.h * .88}`} />
         </g>
 
         {/* Circuit connections */}
@@ -138,12 +138,12 @@ export function InteractiveHero() {
             <g key={`c-${i}`}>
               <path d={d} fill="none" stroke={ih ? t.color : "url(#lg)"} strokeWidth={ih ? 2.5 : 1}
                 opacity={ic ? (ih ? .7 : .18) : 0} strokeLinejoin="round"
-                style={{ transition: "all .5s ease" }}/>
+                style={{ transition: "all .5s ease" }} />
               {ih && ic && <path d={d} fill="none" stroke={t.color} strokeWidth={4} opacity={.12}
-                strokeLinejoin="round" filter="url(#sg)"/>}
+                strokeLinejoin="round" filter="url(#sg)" />}
               {ic && <circle cx={alt ? cx : p.x} cy={alt ? p.y : cy} r={ih ? 3 : 1.5}
                 fill={ih ? t.color : "#22d3ee"} opacity={ih ? .5 : .12}
-                style={{ transition: "all .3s" }}/>}
+                style={{ transition: "all .3s" }} />}
             </g>
           );
         })}
@@ -155,20 +155,20 @@ export function InteractiveHero() {
           const op = pulse.progress < .08 ? pulse.progress * 12 : 1 - pulse.progress * .5;
           return (
             <g key={pulse.id}>
-              <circle cx={pt.x} cy={pt.y} r={6} fill={t.color} opacity={op * .1}/>
-              <circle cx={pt.x} cy={pt.y} r={3.5} fill={t.color} filter="url(#pg)" opacity={op * .8}/>
-              <circle cx={pt.x} cy={pt.y} r={1.5} fill="white" opacity={op}/>
+              <circle cx={pt.x} cy={pt.y} r={6} fill={t.color} opacity={op * .1} />
+              <circle cx={pt.x} cy={pt.y} r={3.5} fill={t.color} filter="url(#pg)" opacity={op * .8} />
+              <circle cx={pt.x} cy={pt.y} r={1.5} fill="white" opacity={op} />
             </g>
           );
         })}
 
         {/* Center platform */}
         <g>
-          <ellipse cx={cx} cy={cy} rx={85} ry={85} fill="url(#hubGlow)"/>
-          <ellipse cx={cx} cy={cy + 14} rx={66} ry={20} fill="url(#platSide)" opacity=".6"/>
-          <ellipse cx={cx} cy={cy} rx={66} ry={20} fill="url(#platTop)" stroke="#b2ebf2" strokeWidth=".5"/>
-          <ellipse cx={cx} cy={cy - 2} rx={50} ry={15} fill="none" stroke="#22d3ee" strokeWidth=".5" opacity=".3" strokeDasharray="3 3"/>
-          <ellipse cx={cx} cy={cy - 4} rx={36} ry={11} fill="none" stroke="#34d399" strokeWidth=".5" opacity=".2" strokeDasharray="2 4"/>
+          <ellipse cx={cx} cy={cy} rx={85} ry={85} fill="url(#hubGlow)" />
+          <ellipse cx={cx} cy={cy + 14} rx={66} ry={20} fill="url(#platSide)" opacity=".6" />
+          <ellipse cx={cx} cy={cy} rx={66} ry={20} fill="url(#platTop)" stroke="#b2ebf2" strokeWidth=".5" />
+          <ellipse cx={cx} cy={cy - 2} rx={50} ry={15} fill="none" stroke="#22d3ee" strokeWidth=".5" opacity=".3" strokeDasharray="3 3" />
+          <ellipse cx={cx} cy={cy - 4} rx={36} ry={11} fill="none" stroke="#34d399" strokeWidth=".5" opacity=".2" strokeDasharray="2 4" />
         </g>
       </svg>
 
@@ -206,18 +206,18 @@ export function InteractiveHero() {
               className="cursor-pointer"
               style={{ filter: ih ? `drop-shadow(0 6px 16px ${tool.color}50)` : "drop-shadow(0 2px 6px rgba(0,0,0,0.08))" }}>
               <polygon points={HEX_SIDE} fill={tool.color} opacity={ih ? .4 : .18}
-                style={{ transition: "opacity .3s" }}/>
+                style={{ transition: "opacity .3s" }} />
               <polygon points={HEX_POINTS} fill="white"
                 stroke={ih ? tool.color : "#e2e8f0"}
                 strokeWidth={ih ? 2.5 : 1}
-                style={{ transition: "stroke .3s, stroke-width .3s" }}/>
+                style={{ transition: "stroke .3s, stroke-width .3s" }} />
               <polyline points="50,2 95,25 95,75" fill="none"
                 stroke={tool.color} strokeWidth={ih ? 2.5 : 1.5}
                 opacity={ih ? .7 : .3}
-                style={{ transition: "all .3s" }}/>
+                style={{ transition: "all .3s" }} />
               <line x1="5" y1="25" x2="50" y2="2" stroke={tool.color}
                 strokeWidth={ih ? 2.5 : 1.5} opacity={ih ? .7 : .3}
-                style={{ transition: "all .3s" }}/>
+                style={{ transition: "all .3s" }} />
             </svg>
             {/* Logo + name label */}
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
@@ -245,7 +245,7 @@ export function InteractiveHero() {
               }}>
               {ic && (
                 <svg viewBox="0 0 12 12" width="10" height="10" className="absolute inset-0 m-auto">
-                  <path d="M3 6l2 2 4-4" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+                  <path d="M3 6l2 2 4-4" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round" />
                 </svg>
               )}
             </div>
@@ -258,7 +258,7 @@ export function InteractiveHero() {
                   {tool.dataType}
                 </div>
                 <div className="w-2 h-2 rotate-45 absolute -bottom-1 left-1/2 -translate-x-1/2"
-                  style={{ backgroundColor: tool.color }}/>
+                  style={{ backgroundColor: tool.color }} />
               </div>
             )}
           </div>

@@ -108,9 +108,41 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right column — Interactive visual */}
-          <div className="relative animate-fade-in delay-300">
+          {/* Right column — Desktop: Interactive SVG orbital */}
+          <div className="hidden lg:block relative animate-fade-in delay-300">
             <InteractiveHero />
+          </div>
+
+          {/* Right column — Mobile/Tablet: Static logo grid */}
+          <div className="lg:hidden flex flex-col items-center gap-6 py-4 animate-fade-in delay-300">
+            {/* Central brand logo */}
+            <div className="flex flex-col items-center gap-2">
+              <img src="/logos/GrowthPulse.svg" alt="GrowthPulse AI" width={100} height={100} style={{ objectFit: "contain" }} />
+              <p className="text-xs text-gp-gray-400 font-medium tracking-wide">30+ tools. One growth score.</p>
+            </div>
+
+            {/* 3×3 tool logo grid */}
+            <div className="grid grid-cols-3 gap-4 w-full max-w-xs">
+              {[
+                { name: "HubSpot",          logo: "/logos/hubspot.svg",          color: "#ff7a59" },
+                { name: "Salesforce",        logo: "/logos/salesforce.svg",       color: "#00a1e0" },
+                { name: "Google Analytics",  logo: "/logos/google-analytics.svg", color: "#e37400" },
+                { name: "Meta Ads",          logo: "/logos/meta.svg",             color: "#0081fb" },
+                { name: "Shopify",           logo: "/logos/shopify.svg",          color: "#7ab55c" },
+                { name: "Google Ads",        logo: "/logos/google-ads.svg",       color: "#4285f4" },
+                { name: "TikTok Ads",        logo: "/logos/tiktok.svg",           color: "#010101" },
+                { name: "LinkedIn Ads",      logo: "/logos/linkedin.svg",         color: "#0a66c2" },
+                { name: "ActiveCampaign",    logo: "/logos/activecampaign.svg",   color: "#356ae6" },
+              ].map((tool) => (
+                <div key={tool.name} className="flex flex-col items-center gap-1.5">
+                  <div className="w-16 h-16 rounded-2xl bg-white shadow-md border border-gp-gray-100 flex items-center justify-center p-3"
+                    style={{ boxShadow: `0 2px 12px ${tool.color}22` }}>
+                    <img src={tool.logo} alt={tool.name} width={36} height={36} style={{ objectFit: "contain" }} />
+                  </div>
+                  <span className="text-[9px] text-gp-gray-400 text-center leading-tight font-medium">{tool.name}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
